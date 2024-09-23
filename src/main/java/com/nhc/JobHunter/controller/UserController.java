@@ -4,8 +4,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.nhc.JobHunter.domain.User;
 import com.nhc.JobHunter.service.UserService;
+import com.nhc.JobHunter.service.error.IdInvalidException;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -23,35 +27,41 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping("/user")
-    public List<User> getAllUser() {
-        return this.userService.getAllUser();
+    @GetMapping("/users")
+    public ResponseEntity<List<User>> getAllUser() {
+        List<User> list = this.userService.getAllUser();
+        return ResponseEntity.status(HttpStatus.OK).body(list);
     }
 
-    @GetMapping("/user/{id}")
-    public User getUserById(
+    @GetMapping("/users/{id}")
+    public ResponseEntity<User> getUserById(
             @PathVariable long id) {
-        return this.userService.getUserById(id);
+        User user = this.userService.getUserById(id);
+        return ResponseEntity.status(HttpStatus.OK).body(user);
     }
 
-    @PostMapping("/user")
-    public User createNewUser(
+    @PostMapping("/users")
+    public ResponseEntity<User> createNewUser(
             @RequestBody User newUser) {
 
         User myUser = this.userService.handleCreateUser(newUser);
-        return myUser;
+        return ResponseEntity.status(HttpStatus.CREATED).body(myUser);
     }
 
-    @DeleteMapping("/user/{id}")
-    public String deleteUser(
-            @PathVariable long id) {
+    @DeleteMapping("/users/{id}")
+    public ResponseEntity<String> deleteUser(
+            @PathVariable long id) throws IdInvalidException {
+        if (id > 100) {
+            throw new IdInvalidException("errorr");
+        }
         this.userService.handleDeleteUser(id);
-        return "delete";
+        return ResponseEntity.status(HttpStatus.OK).body("delete");
     }
 
-    @PutMapping("/user")
-    public User updateUser(
+    @PutMapping("/users")
+    public ResponseEntity<User> updateUser(
             @RequestBody User newUser) {
-        return this.userService.handleUpdateUser(newUser);
+        User updatedUser = this.userService.handleUpdateUser(newUser);
+        return ResponseEntity.status(HttpStatus.OK).body(updatedUser);
     }
 }
