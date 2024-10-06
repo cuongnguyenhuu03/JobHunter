@@ -1,4 +1,4 @@
-package com.nhc.JobHunter.service.error;
+package com.nhc.JobHunter.util.error;
 
 public class IdInvalidException extends Exception {
 

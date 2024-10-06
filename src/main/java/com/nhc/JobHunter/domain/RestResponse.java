@@ -39,4 +39,10 @@ public class RestResponse<T> {
         this.data = data;
     }
 
+    @Override
+    public String toString() {
+        return "RestResponse [statusCode=" + statusCode + ", error=" + error + ", message=" + message + ", data=" + data
+                + "]";
+    }
+
 }
