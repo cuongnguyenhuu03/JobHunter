@@ -1,11 +1,16 @@
 package com.nhc.JobHunter.service;
 
+import java.util.List;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import com.nhc.JobHunter.domain.User;
+import com.nhc.JobHunter.domain.dto.Meta;
+import com.nhc.JobHunter.domain.dto.ResultPaginationDTO;
 import com.nhc.JobHunter.repository.UserRepository;
-
-import java.util.List;
 
 @Service
 public class UserService {
@@ -16,8 +21,20 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public List<User> getAllUser() {
-        return this.userRepository.findAll();
+    public ResultPaginationDTO getAllUser(Specification<User> spec, Pageable pageable) {
+        Page<User> pageUser = this.userRepository.findAll(spec, pageable);
+        ResultPaginationDTO rs = new ResultPaginationDTO();
+        Meta meta = new Meta();
+
+        meta.setPage(pageUser.getNumber() + 1);
+        meta.setPageSize(pageUser.getSize());
+        meta.setPages(pageUser.getTotalPages());
+        meta.setTotal(pageUser.getTotalElements());
+
+        rs.setMeta(meta);
+        rs.setResult(pageUser.getContent());
+
+        return rs;
     }
 
     public User getUserById(long id) {
