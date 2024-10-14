@@ -1,6 +1,7 @@
 package com.nhc.JobHunter.service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -9,6 +10,9 @@ import org.springframework.stereotype.Service;
 
 import com.nhc.JobHunter.domain.User;
 import com.nhc.JobHunter.domain.dto.Meta;
+import com.nhc.JobHunter.domain.dto.ResCreateUserDTO;
+import com.nhc.JobHunter.domain.dto.ResUpdateUserDTO;
+import com.nhc.JobHunter.domain.dto.ResUserDTO;
 import com.nhc.JobHunter.domain.dto.ResultPaginationDTO;
 import com.nhc.JobHunter.repository.UserRepository;
 
@@ -32,7 +36,21 @@ public class UserService {
         meta.setTotal(pageUser.getTotalElements());
 
         rs.setMeta(meta);
-        rs.setResult(pageUser.getContent());
+
+        // remove sensitive data
+        List<ResUserDTO> listUser = pageUser.getContent()
+                .stream().map(item -> new ResUserDTO(
+                        item.getId(),
+                        item.getEmail(),
+                        item.getName(),
+                        item.getGender(),
+                        item.getAddress(),
+                        item.getAge(),
+                        item.getUpdatedAt(),
+                        item.getCreatedAt()))
+                .collect(Collectors.toList());
+
+        rs.setResult(listUser);
 
         return rs;
     }
@@ -52,9 +70,10 @@ public class UserService {
     public User handleUpdateUser(User user) {
         User updateUser = this.getUserById(user.getId());
         if (updateUser != null) {
-            updateUser.setEmail(user.getEmail());
+            updateUser.setAddress(user.getAddress());
+            updateUser.setGender(user.getGender());
+            updateUser.setAge(user.getAge());
             updateUser.setName(user.getName());
-            updateUser.setPassword(user.getPassword());
 
             updateUser = this.userRepository.save(updateUser);
         }
@@ -63,5 +82,45 @@ public class UserService {
 
     public User handleGetUserByUserName(String username) {
         return this.userRepository.findByEmail(username);
+    }
+
+    public Boolean isEmailExist(String email) {
+        return this.userRepository.existsByEmail(email);
+    }
+
+    public ResCreateUserDTO convertToResCreateUserDTO(User user) {
+        ResCreateUserDTO res = new ResCreateUserDTO();
+        res.setId(user.getId());
+        res.setEmail(user.getEmail());
+        res.setName(user.getName());
+        res.setAge(user.getAge());
+        res.setCreatedAt(user.getCreatedAt());
+        res.setGender(user.getGender());
+        res.setAddress(user.getAddress());
+        return res;
+    }
+
+    public ResUpdateUserDTO convertToResUpdateUserDTO(User user) {
+        ResUpdateUserDTO res = new ResUpdateUserDTO();
+        res.setId(user.getId());
+        res.setName(user.getName());
+        res.setAge(user.getAge());
+        res.setUpdatedAt(user.getUpdatedAt());
+        res.setGender(user.getGender());
+        res.setAddress(user.getAddress());
+        return res;
+    }
+
+    public ResUserDTO convertToResUserDTO(User user) {
+        ResUserDTO res = new ResUserDTO();
+        res.setId(user.getId());
+        res.setEmail(user.getEmail());
+        res.setName(user.getName());
+        res.setAge(user.getAge());
+        res.setUpdatedAt(user.getUpdatedAt());
+        res.setCreatedAt(user.getCreatedAt());
+        res.setGender(user.getGender());
+        res.setAddress(user.getAddress());
+        return res;
     }
 }
