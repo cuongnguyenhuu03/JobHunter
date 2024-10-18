@@ -56,7 +56,7 @@ public class SecurityConfiguration {
     public JwtAuthenticationConverter jwtAuthenticationConverter() {
         JwtGrantedAuthoritiesConverter grantedAuthoritiesConverter = new JwtGrantedAuthoritiesConverter();
         grantedAuthoritiesConverter.setAuthorityPrefix("");
-        grantedAuthoritiesConverter.setAuthoritiesClaimName("jobhunter");
+        grantedAuthoritiesConverter.setAuthoritiesClaimName("permission");
         JwtAuthenticationConverter jwtAuthenticationConverter = new JwtAuthenticationConverter();
 
         jwtAuthenticationConverter.setJwtGrantedAuthoritiesConverter(grantedAuthoritiesConverter);
@@ -71,15 +71,10 @@ public class SecurityConfiguration {
                 .cors(Customizer.withDefaults())
                 .authorizeHttpRequests(
                         authz -> authz
-                                .requestMatchers("/api/v1", "/api/v1/login").permitAll()
+                                .requestMatchers("/api/v1/auth/login", "/api/v1/auth/refresh").permitAll()
                                 .anyRequest().authenticated())
-                // .anyRequest().permitAll())
                 .oauth2ResourceServer((oauth2) -> oauth2.jwt(Customizer.withDefaults())
                         .authenticationEntryPoint(customAuthenticationEntryPoint))
-                // .exceptionHandling(
-                // exceptions -> exceptions
-                // .authenticationEntryPoint(new BearerTokenAuthenticationEntryPoint()) // 401
-                // .accessDeniedHandler(new BearerTokenAccessDeniedHandler())) // 403
                 .formLogin(f -> f.disable())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
         return http.build();

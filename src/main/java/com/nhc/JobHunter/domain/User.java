@@ -5,6 +5,7 @@ import java.time.Instant;
 import com.nhc.JobHunter.util.SecurityUtil;
 import com.nhc.JobHunter.util.constant.GenderEnum;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -44,6 +45,7 @@ public class User {
 
     private String address;
 
+    @Column(columnDefinition = "MEDIUMTEXT")
     private String refreshToken;
 
     private Instant createdAt;
