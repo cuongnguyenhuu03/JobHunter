@@ -8,6 +8,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -95,24 +96,27 @@ public class AuthController {
 
     @GetMapping("/auth/account")
     @ApiMessage("fetch account")
-    public ResponseEntity<ResLoginDTO.UserLogin> getAccount() {
+    public ResponseEntity<ResLoginDTO.UserGetAccount> getAccount() {
         String email = SecurityUtil.getCurrentUserLogin().isPresent() ? SecurityUtil.getCurrentUserLogin().get() : "";
 
         User currentUser = this.userService.handleGetUserByUserName(email);
         ResLoginDTO.UserLogin userLogin = new ResLoginDTO.UserLogin();
+        ResLoginDTO.UserGetAccount userGetAccount = new ResLoginDTO.UserGetAccount();
 
         if (currentUser != null) {
             userLogin.setId(currentUser.getId());
             userLogin.setEmail(currentUser.getEmail());
             userLogin.setName(currentUser.getName());
+            userGetAccount.setUser(userLogin);
         }
-        return ResponseEntity.ok().body(userLogin);
+        return ResponseEntity.ok().body(userGetAccount);
     }
 
     @GetMapping("/auth/refresh")
     @ApiMessage("Get User by refresh token")
     public ResponseEntity<ResLoginDTO> getRefreshToken(
             @CookieValue(name = "refresh_token") String refresh_token) throws IdInvalidException {
+
         // check valid token
         Jwt decodedToken = this.securityUtil.checkValidRefreshToken(refresh_token);
         String email = decodedToken.getSubject();
@@ -156,4 +160,30 @@ public class AuthController {
                 .body(resLoginDTO);
     }
 
+    @PostMapping("/auth/logout")
+    @ApiMessage("Log out")
+    public ResponseEntity<Void> logout() {
+
+        // get user from Security
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        String email = authentication.getName();
+
+        // update token
+        this.userService.updateUserToken(null, email);
+
+        // remove refresh token in cookie
+        ResponseCookie deleteSpringCookie = ResponseCookie
+                .from("refresh_token", null)
+                .httpOnly(true)
+                .secure(true)
+                .path("/")
+                .maxAge(0)
+                .build();
+
+        return ResponseEntity
+                .ok()
+                .header(HttpHeaders.SET_COOKIE, deleteSpringCookie.toString())
+                .body(null);
+    }
 }
