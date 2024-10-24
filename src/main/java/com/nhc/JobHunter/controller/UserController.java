@@ -3,10 +3,10 @@ package com.nhc.JobHunter.controller;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.nhc.JobHunter.domain.User;
-import com.nhc.JobHunter.domain.dto.ResCreateUserDTO;
-import com.nhc.JobHunter.domain.dto.ResUpdateUserDTO;
-import com.nhc.JobHunter.domain.dto.ResUserDTO;
-import com.nhc.JobHunter.domain.dto.ResultPaginationDTO;
+import com.nhc.JobHunter.domain.response.ResCreateUserDTO;
+import com.nhc.JobHunter.domain.response.ResUpdateUserDTO;
+import com.nhc.JobHunter.domain.response.ResUserDTO;
+import com.nhc.JobHunter.domain.response.ResultPaginationDTO;
 import com.nhc.JobHunter.service.UserService;
 import com.nhc.JobHunter.util.anotation.ApiMessage;
 import com.nhc.JobHunter.util.error.IdInvalidException;

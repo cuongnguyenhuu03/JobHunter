@@ -1,4 +1,4 @@
-package com.nhc.JobHunter.domain.dto;
+package com.nhc.JobHunter.domain.request;
 
 import jakarta.validation.constraints.NotBlank;
 

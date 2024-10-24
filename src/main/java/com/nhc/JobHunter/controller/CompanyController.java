@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.nhc.JobHunter.domain.Company;
-import com.nhc.JobHunter.domain.dto.ResultPaginationDTO;
+import com.nhc.JobHunter.domain.response.ResultPaginationDTO;
 import com.nhc.JobHunter.service.CompanyService;
 import com.turkraft.springfilter.boot.Filter;
 

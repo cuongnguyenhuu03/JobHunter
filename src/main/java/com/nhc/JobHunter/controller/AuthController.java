@@ -13,8 +13,8 @@ import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.nhc.JobHunter.domain.User;
-import com.nhc.JobHunter.domain.dto.ReqLoginDTO;
-import com.nhc.JobHunter.domain.dto.ResLoginDTO;
+import com.nhc.JobHunter.domain.request.ReqLoginDTO;
+import com.nhc.JobHunter.domain.response.ResLoginDTO;
 import com.nhc.JobHunter.service.UserService;
 import com.nhc.JobHunter.util.SecurityUtil;
 import com.nhc.JobHunter.util.anotation.ApiMessage;

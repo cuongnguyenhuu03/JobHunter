@@ -10,7 +10,7 @@ import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.stereotype.Component;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.nhc.JobHunter.domain.RestResponse;
+import com.nhc.JobHunter.domain.response.RestResponse;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

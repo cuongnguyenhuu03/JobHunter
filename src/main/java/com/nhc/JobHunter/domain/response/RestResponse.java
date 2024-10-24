@@ -1,4 +1,4 @@
-package com.nhc.JobHunter.domain;
+package com.nhc.JobHunter.domain.response;
 
 public class RestResponse<T> {
 
