@@ -1,4 +1,4 @@
-package com.nhc.JobHunter.service;
+package com.nhc.JobHunter.config;
 
 import java.util.Collections;
 
@@ -7,6 +7,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
+
+import com.nhc.JobHunter.service.UserService;
 
 @Component("userDetailsService")
 public class UserDetailCustom implements UserDetailsService {
