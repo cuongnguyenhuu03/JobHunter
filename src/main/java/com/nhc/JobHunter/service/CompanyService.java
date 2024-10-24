@@ -6,7 +6,6 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import com.nhc.JobHunter.domain.Company;
-import com.nhc.JobHunter.domain.dto.Meta;
 import com.nhc.JobHunter.domain.dto.ResultPaginationDTO;
 import com.nhc.JobHunter.repository.CompanyRepository;
 
@@ -26,7 +25,7 @@ public class CompanyService {
     public ResultPaginationDTO getAllCompanies(Specification<Company> spec, Pageable pageable) {
         Page<Company> pageCompany = this.companyRepository.findAll(spec, pageable);
         ResultPaginationDTO rs = new ResultPaginationDTO();
-        Meta meta = new Meta();
+        ResultPaginationDTO.Meta meta = new ResultPaginationDTO.Meta();
 
         meta.setPage(pageCompany.getNumber() + 1);
         meta.setPageSize(pageCompany.getSize());

@@ -13,7 +13,7 @@ import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.nhc.JobHunter.domain.User;
-import com.nhc.JobHunter.domain.dto.LoginDTO;
+import com.nhc.JobHunter.domain.dto.ReqLoginDTO;
 import com.nhc.JobHunter.domain.dto.ResLoginDTO;
 import com.nhc.JobHunter.service.UserService;
 import com.nhc.JobHunter.util.SecurityUtil;
@@ -49,7 +49,7 @@ public class AuthController {
     private Long refreshTokenExpiration;
 
     @PostMapping("/auth/login")
-    public ResponseEntity<Object> login(@Valid @RequestBody LoginDTO loginDto) {
+    public ResponseEntity<Object> login(@Valid @RequestBody ReqLoginDTO loginDto) {
 
         // nạp input gồm username/ password vào security
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
