@@ -1,5 +1,6 @@
 package com.nhc.JobHunter.controller;
 
+import java.util.Optional;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.ResponseEntity;
@@ -57,5 +58,11 @@ public class CompanyController {
     public ResponseEntity<Object> deleteCompany(@PathVariable Long id) {
         this.companyService.handleDeleteCompany(id);
         return ResponseEntity.ok().body(null);
+    }
+
+    @GetMapping("/companies/{id}")
+    public ResponseEntity<Company> fetchCompanyById(@PathVariable("id") Long id) {
+        Optional<Company> cOptional = this.companyService.findById(id);
+        return ResponseEntity.ok().body(cOptional.get());
     }
 }
