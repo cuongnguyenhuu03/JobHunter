@@ -49,9 +49,10 @@ public class RoleController {
         }
 
         // check name
-        if (this.roleService.existByName(r.getName())) {
-            throw new IdInvalidException("Role với name = " + r.getName() + " đã tồn tại");
-        }
+        // if (this.roleService.existByName(r.getName())) {
+        // throw new IdInvalidException("Role với name = " + r.getName() + " đã tồn
+        // tại");
+        // }
 
         return ResponseEntity.status(HttpStatus.CREATED).body(this.roleService.update(r));
     }
