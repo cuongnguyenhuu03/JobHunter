@@ -13,7 +13,9 @@ import jakarta.persistence.PrePersist;
 import jakarta.persistence.PreUpdate;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import com.nhc.JobHunter.util.SecurityUtil;
 
@@ -21,6 +23,8 @@ import com.nhc.JobHunter.util.SecurityUtil;
 @Table(name = "permissions")
 @Getter
 @Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class Permission {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -64,4 +68,15 @@ public class Permission {
 
         this.updatedAt = Instant.now();
     }
+
+    public Permission(@NotBlank(message = "name can not be blank") String name,
+            @NotBlank(message = "apiPath can not be blank") String apiPath,
+            @NotBlank(message = "method can not be blank") String method,
+            @NotBlank(message = "module can not be blank") String module) {
+        this.name = name;
+        this.apiPath = apiPath;
+        this.method = method;
+        this.module = module;
+    }
+
 }
