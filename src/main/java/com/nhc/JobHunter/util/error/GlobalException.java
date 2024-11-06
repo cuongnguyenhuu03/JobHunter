@@ -68,8 +68,21 @@ public class GlobalException {
         RestResponse<Object> res = new RestResponse<Object>();
         res.setStatusCode(HttpStatus.BAD_REQUEST.value());
         res.setError(ex.getMessage());
-        res.setMessage("Exception upload file ...");
+        res.setMessage("Exception upload file");
 
         return ResponseEntity.badRequest().body(res);
+    }
+
+    @ExceptionHandler(value = {
+            PermissionException.class
+    })
+    public ResponseEntity<RestResponse<Object>> handlePerMissionException(Exception ex) {
+
+        RestResponse<Object> res = new RestResponse<Object>();
+        res.setStatusCode(HttpStatus.FORBIDDEN.value());
+        res.setError(ex.getMessage());
+        res.setMessage("Forbidden");
+
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(res);
     }
 }

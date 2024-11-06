@@ -12,7 +12,7 @@ import com.nhc.JobHunter.domain.Role;
 import com.nhc.JobHunter.domain.User;
 import com.nhc.JobHunter.service.UserService;
 import com.nhc.JobHunter.util.SecurityUtil;
-import com.nhc.JobHunter.util.error.IdInvalidException;
+import com.nhc.JobHunter.util.error.PermissionException;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -50,10 +50,10 @@ public class PermissionInterceptor implements HandlerInterceptor {
                     boolean isAllowed = pers.stream()
                             .anyMatch(item -> item.getApiPath().equals(path) && item.getMethod().equals(httpMethod));
                     if (isAllowed == false) {
-                        throw new IdInvalidException("không có quyền truy cập");
+                        throw new PermissionException("không có quyền truy cập");
                     }
                 } else {
-                    throw new IdInvalidException("không có quyền truy cập");
+                    throw new PermissionException("không có quyền truy cập");
                 }
             }
         }
